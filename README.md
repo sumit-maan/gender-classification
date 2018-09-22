@@ -1,4 +1,4 @@
-# gender-classification
+Part1: gender-classification
 Gender Classifier/Detection by Name
 
 #Directories (Data Set)
@@ -42,3 +42,15 @@ implemented Naive Bayes Classifier (NBC) using training data set and used test d
             F Score : 0.96 ;
                     
 Gender classifier build using first name of any person. 
+
+Part2: race-classifier
+
+implemented using Decision Tree classifier for multiclassification 
+
+    Below are the results:
+        A  ccuracy on test set: 87.4 % ;
+        Pricision: 0.76 ;
+        Recal: 0.73 ;
+        F1 Score: 0.74 ;
+        
+##Cheers##
