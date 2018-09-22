@@ -72,14 +72,6 @@ print("Pricision, Recall and F score on test set:\nPricision:", P, "\nRecal:", R
 def getRace(name):
     name = myfeatures(name)
     pred_arr = model.predict(name).ravel()
-    if pred_arr[0]  == 1:
-        race = "balck"
-    elif pred_arr[1]  == 1:
-        race = "balck"
-    if pred_arr[3]  == 1:
-        race = "hispanic"
-    elif pred_arr[4]  == 1:
-        race = "indian"
-    return(race)
+    return(pred_arr)
 
 print("cheers")
