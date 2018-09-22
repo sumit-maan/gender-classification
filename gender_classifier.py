@@ -72,7 +72,7 @@ df.reset_index(inplace=True, drop=True)
 df.dropna(inplace=True, how="any")
 df.isnull().sum()
 
-#output gender as male = 0 and female = 1
+#replace the class type of gender column; gender : male = 0 and female = 1
 df["gender"] = (df["gender"]=="f").astype(int)
 
 #NOTE: Labeled data for decision tree classifier to prevent overfitting(can be done in more better ways)
@@ -114,7 +114,7 @@ model.fit(X_train, Y_train)
 prediction = model.predict(X_cv)
 accuracy = np.mean((prediction == Y_cv.ravel()))
 accuracy = round(accuracy, 4)
-print("Accuracy of the Dicision Tree Classifier (on test data set):\n", 100*(accuracy), "%") 
+print("Accuracy of the Dicision Tree Classifier (on CV data set):\n", 100*(accuracy), "%") 
 
 #confidence interval 
 classification_error = np.mean((prediction != Y_cv.ravel()))
@@ -141,16 +141,20 @@ def fScore(x,y,pred):
     P = TP/(TP+FP)
     R = TP/(TP+FN)
     F1_score = 2*P*R/(P+R)
-    print(TP, FP, TN, FN)
     return(P, R, F1_score)
 
 pred = model.predict(X_cv)
 P, R, F1_score = fScore(X_cv, Y_cv, pred)
 print("Precision: " , round(P, 3) , "\nRecall: ", round(R, 3), "\nF1_Score: ", round(F1_score, 3))
 
+#Model (Giving a name it returns the gender for that name)
 def getGender(name):
     name = myfeatures(name)
     return(model.predict(name))
+
+# getGender(["Amit", "Priyaka", "ankita", "adam", "Joy", "robert"])
+
+# array([0, 1, 1, 0, 1, 0])
 
 ########################### 2. Naive Bayes Classifier !! Trained on Complete Data     ##########################################
 
@@ -169,8 +173,8 @@ Y1 = df1[:,1].astype(np.int)
 X1, Y1 = shuffle(X1, Y1)
 
 featureset = [(X1[i],Y1[i]) for i in range(len(X1))]
-train_set = featureset[: int(0.8*len(featureset))]
-test_set = featureset[int(0.8*len(featureset)):]
+train_set = featureset[: int(0.7*len(featureset))]
+test_set = featureset[int(0.7*len(featureset)):]
 
 nb_clf = nbc.train(train_set)
 accu = classify.accuracy(nb_clf, test_set)
