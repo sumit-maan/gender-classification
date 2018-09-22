@@ -34,10 +34,11 @@ Splited the original Data (Skewed Data - final_names.csv) and implemented Naive 
 Randomly shuffled the data and split into 70% data as training set and 30% as test set:
 
 implemented Naive Bayes Classifier (NBC) using training data set and used test data set to check the accuracy/f score of model.
+
     Below are the results:
-                        Accuracy on test set: 93.00 % ;
-                        Pricision : 0.967  ;
-                        Recall : 0.95 ;
-                        F Score : 0.96 ;
+            Accuracy on test set: 93.10 % ;
+            Pricision : 0.967  ;
+            Recall : 0.95 ;
+            F Score : 0.96 ;
                     
 Gender classifier build using first name of any person. 
