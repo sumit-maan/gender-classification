@@ -1,0 +1,85 @@
+import os
+import pandas as pd
+import warnings
+warnings.filterwarnings("ignore")
+import numpy as np
+from sklearn.metrics import precision_recall_fscore_support as prfs
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.utils import shuffle
+
+#cleaned data contains: name, gender and race
+df = pd.read_csv("final_names.csv")
+df.drop(["Unnamed: 0", "gender"], axis=1, inplace=True)
+df["race"].unique()
+
+#for multiclass convert all the races into vector format
+lst = []
+n = len(df)
+race = df["race"]
+for i in range(n):
+    if race[i] == "black":
+        lst.append(np.array((1,0,0,0)))
+    if race[i] == "white":
+        lst.append(np.array((0,1,0,0)))
+    if race[i] == "hispanic":
+        lst.append(np.array((0,0,1,0)))
+    if race[i] == "indian":
+        lst.append(np.array((0,0,0,1)))
+df["race"] = lst
+
+def myfeatures(x):
+    x = x.lower()
+    return {
+        "x1": x[0],
+        "x2": x[0:2],
+        "x3": x[0:3],
+        "x4": x[-3:],
+        "x5": x[-2:],
+        "x6": x[-1],
+    }
+myfeatures = np.vectorize(myfeatures)
+
+df_matrix = df.as_matrix()
+X = myfeatures(df_matrix[:,0].astype(np.str))
+Y = df_matrix[:,1].astype(list)
+Y = np.vstack(Y)
+X, Y = shuffle(X, Y)
+
+X_train = X[:int(len(X)*.8)]
+Y_train = Y[:int(len(X)*.8)]
+X_test = X[int(len(X)*.8):]
+Y_test = Y[int(len(X)*.8):]
+
+## Decision Tree Classifier
+vect = DictVectorizer()
+dtc = DecisionTreeClassifier()
+model = Pipeline([('dict', vect), ('dtc', dtc)])
+model.fit(X_train, Y_train)
+prediction = model.predict(X_test)
+accuracy = np.mean((prediction == Y_test))
+accuracy = round(accuracy, 4)
+print("Accuracy of the Dicision Tree Classifier (on Test data set):\n", 100*(accuracy), "%") 
+
+#getting precision and recall on test data set
+P, R, F1_score, _ =  prfs(Y_test, prediction, average="micro")
+
+print("Pricision, Recall and F score on test set:\nPricision:", P, "\nRecal:", R, "\nF1 Score:", F1_score)
+
+#Model
+#return race for a given name array
+def getRace(name):
+    name = myfeatures(name)
+    pred_arr = model.predict(name).ravel()
+    if pred_arr[0]  == 1:
+        race = "balck"
+    elif pred_arr[1]  == 1:
+        race = "balck"
+    if pred_arr[3]  == 1:
+        race = "hispanic"
+    elif pred_arr[4]  == 1:
+        race = "indian"
+    return(race)
+
+print("cheers")
