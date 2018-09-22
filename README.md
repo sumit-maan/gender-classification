@@ -43,7 +43,7 @@ implemented Naive Bayes Classifier (NBC) using training data set and used test d
                     
 Gender classifier build using first name of any person. 
 
-#Part2: race-classifier
+#Part2: race-classifier by name
 
 implemented using Decision Tree classifier for multiclassification 
 
