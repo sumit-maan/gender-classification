@@ -125,19 +125,13 @@ c_2 = error + 1.96*np.sqrt( (error * (1 - error)) / n)
 confidence_interval = [c_1, c_2]
 
 def fScore(x,y,pred):
-    TP = 0
-    FP = 0
-    TN = 0
-    FN = 0
-    for i in range(len(x)):
-        if (y[i] == 1 & pred[i] == 1):
-            TP = TP+1
-        elif (y[i] == 1 & pred[i] == 0):
-            FN = FN+1
-        elif (y[i] == 0 & pred[i] == 0):
-            TN = TN+1
-        else:
-            FP = FP+1
+    FP = np.sum(np.logical_and(pred == 1, y== 0)).astype(np.float)
+    TP = np.sum(np.logical_and(pred == 1, y == 1)).astype(np.float)
+    FN = np.sum(np.logical_and(pred == 0, y == 1)).astype(np.float)
+    P = TP/(TP+FP)
+    R = TP/(TP+FN)
+    F1_score = 2*P*R/(P+R)
+    return(P, R, F1_score)
     P = TP/(TP+FP)
     R = TP/(TP+FN)
     F1_score = 2*P*R/(P+R)
