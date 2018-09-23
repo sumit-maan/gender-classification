@@ -21,9 +21,9 @@ Why I am taking cross validation set is because you can check you overfitting on
             Accuracy on Training set: 98.24 % ;
             Accuracy on CV set: 95.56 % ;
             Accuracy on Test set: 93.76 % ;
-            Pricision : 0.974  ;
-            Recall : 0.623  ;       ## Recall is low because we have skewed data and its causing overfitting
-            F Score: 0.76 ;
+            Pricision : 0.96  ;
+            Recall : 0.94  ;       ## Recall is low because we have skewed data and its causing overfitting
+            F Score: 0.95 ;
 
 ############# 2. Naive Bayes Classifier  ##################
 
