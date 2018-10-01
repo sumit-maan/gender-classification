@@ -31,7 +31,7 @@ df["first name"].fillna(value= df[" first name"], inplace=True)
 df.drop([" first name", "last name", "name"], axis=1, inplace=True)
 df.dropna(inplace=True)
 
-def processWord(words_list):
+def processWordList(words_list):
     final_words_list = []
     for word in words_list:
         word = str(word)
@@ -48,8 +48,8 @@ def processWord(words_list):
 #Convert the names into sensible format/words cleaning
 names = df["first name"].tolist()
 first_names = []
-names = processWord(names)
-for name in names:
+processed_names = processWordList(names)
+for name in processed_names:
     name = name.split(" ")
     if len(name)<1:
         first_names.append(np.nan)
@@ -80,15 +80,15 @@ df2 = df[df["gender"]==1]
 df = pd.concat([df2,df, df2,], ignore_index=True,verify_integrity=False)
 df.reset_index(inplace=True, drop=True)
 
-def myfeatures(x):
-    x = x.lower()
+def myfeatures(name):
+    name = name.lower()
     return {
-        "x1": x[0],
-        "x2": x[0:2],
-        "x3": x[0:3],
-        "x4": x[-3:],
-        "x5": x[-2:],
-        "x6": x[-1],
+        "first_letter": name[0],
+        "first_two_letters": name[0:2],
+        "first_three_letters": name[0:3],
+        "last_three_letters": name[-3:],
+        "last_two_letters": name[-2:],
+        "last_letter": name[-1],
     }
 myfeatures = np.vectorize(myfeatures)
 
@@ -116,14 +116,6 @@ accuracy = np.mean((prediction == Y_cv.ravel()))
 accuracy = round(accuracy, 4)
 print("Accuracy of the Dicision Tree Classifier (on CV data set):\n", 100*(accuracy), "%") 
 
-#confidence interval 
-classification_error = np.mean((prediction != Y_cv.ravel()))
-error = classification_error
-n = len(X_test)
-c_1 = error - 1.96*np.sqrt( (error * (1 - error)) / n)
-c_2 = error + 1.96*np.sqrt( (error * (1 - error)) / n)
-confidence_interval = [c_1, c_2]
-
 def fScore(x,y,pred):
     FP = np.sum(np.logical_and(pred == 1, y== 0)).astype(np.float)
     TP = np.sum(np.logical_and(pred == 1, y == 1)).astype(np.float)
@@ -150,7 +142,7 @@ def getGender(name):
 
 # array([0, 1, 1, 0, 1, 0])
 
-########################### 2. Naive Bayes Classifier !! Trained on Complete Data     ##########################################
+########################### 2. Naive Bayes Classifier !! Trained on Complete Data     ################
 
 from nltk import NaiveBayesClassifier as nbc
 from sklearn.naive_bayes import MultinomialNB
@@ -172,7 +164,7 @@ test_set = featureset[int(0.7*len(featureset)):]
 
 nb_clf = nbc.train(train_set)
 accu = classify.accuracy(nb_clf, test_set)
-accu= round(accu, 3)
+accu = round(accu, 3)
 print("Accuracy of the Naive Bayes Classifier (on test data set):\n", 100*(accu), "%") 
 
 refsets = collections.defaultdict(set)
