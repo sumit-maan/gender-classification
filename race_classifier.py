@@ -12,32 +12,31 @@ from sklearn.utils import shuffle
 #cleaned data contains: name, gender and race
 df = pd.read_csv("final_names.csv")
 df.drop(["Unnamed: 0", "gender"], axis=1, inplace=True)
-df["race"].unique()
 
 #for multiclass convert all the races into vector format
-lst = []
+race_list = []
 n = len(df)
 race = df["race"]
 for i in range(n):
     if race[i] == "black":
-        lst.append(np.array((1,0,0,0)))
-    if race[i] == "white":
-        lst.append(np.array((0,1,0,0)))
-    if race[i] == "hispanic":
-        lst.append(np.array((0,0,1,0)))
-    if race[i] == "indian":
-        lst.append(np.array((0,0,0,1)))
-df["race"] = lst
+        race_list.append(np.array((1,0,0,0)))
+    elif race[i] == "white":
+        race_list.append(np.array((0,1,0,0)))
+    elif race[i] == "hispanic":
+        race_list.append(np.array((0,0,1,0)))
+    elif race[i] == "indian":
+        race_list.append(np.array((0,0,0,1)))
+df["race"] = race_list
 
-def myfeatures(x):
-    x = x.lower()
+def myfeatures(name):
+    name = name.lower()
     return {
-        "x1": x[0],
-        "x2": x[0:2],
-        "x3": x[0:3],
-        "x4": x[-3:],
-        "x5": x[-2:],
-        "x6": x[-1],
+        "first_letter": name[0],
+        "first_two_letters": name[0:2],
+        "first_three_letters": name[0:3],
+        "last_three_letters": name[-3:],
+        "last_two_letters": name[-2:],
+        "last_letter": name[-1],
     }
 myfeatures = np.vectorize(myfeatures)
 
