@@ -158,7 +158,7 @@ QtAwesome==0.4.4
 qtconsole==4.3.1
 QtPy==1.4.1
 requests==2.18.4
-rope==0.10.7
+rope==0.11.0
 ruamel-yaml==0.15.35
 scandir==1.7
 scikit-image==0.13.1
